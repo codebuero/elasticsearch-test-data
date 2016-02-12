@@ -42,12 +42,13 @@ $ python es_test_data.py --es_url=http://localhost:9200
 $
 ```
  
-Without any command line options, it will generate and upload 1000 documents of the format
+Without any command line options, it will generate and upload 10000 documents of the format
 
 ```
 {
-    "name":<<str>>,
-    "age":<<int>>,
+    "name":<<name>>,
+    "age":<<human_age>>,
+    "address":<<address>>,
     "last_updated":<<ts>>
 }
 ```
