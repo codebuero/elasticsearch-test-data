@@ -92,6 +92,11 @@ def get_data_for_format(format):
         max = min + 100000 if len(split_f) < 4 else int(split_f[3])
         return_val = random.randrange(min, max)
 
+    elif field_type == "human_age":
+        min = 0 if len(split_f) < 3 else int(split_f[2])
+        max = min + 80 if len(split_f) < 4 else int(split_f[3])
+        return_val = random.randrange(min, max)
+
     elif field_type == "ts":
         now = int(time.time())
         per_day = 24 * 60 * 60
@@ -244,7 +249,7 @@ if __name__ == '__main__':
     tornado.options.define("num_of_shards", type=int, default=2, help="Number of shards for ES index")
     tornado.options.define("http_upload_timeout", type=int, default=3, help="Timeout in seconds when uploading data")
     tornado.options.define("count", type=int, default=10000, help="Number of docs to generate")
-    tornado.options.define("format", type=str, default='name:name,address:address,last_updated:ts', help="message format")
+    tornado.options.define("format", type=str, default='name:name,age:human_age,address:address,last_updated:ts', help="message format")
     tornado.options.define("num_of_replicas", type=int, default=0, help="Number of replicas for ES index")
     tornado.options.define("force_init_index", type=bool, default=False, help="Force deleting and re-initializing the Elasticsearch index")
     tornado.options.define("set_refresh", type=bool, default=False, help="Set refresh rate to -1 before starting the upload")
