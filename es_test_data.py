@@ -7,6 +7,7 @@ import random
 import string
 import uuid
 import numpy
+from faker import Factory
 
 import tornado.gen
 import tornado.httpclient
@@ -18,7 +19,7 @@ id_counter = 0
 batch_upload_took = []
 upload_data_count = 0
 _dict_data = None
-
+fake = Factory.create("de_DE")
 
 def delete_index(idx_name):
     try:
@@ -114,6 +115,12 @@ def get_data_for_format(format):
         max = min + 8 if len(split_f) < 4 else int(split_f[3])
         count = random.randrange(min, max)
         return_val = " ".join([random.choice(_dict_data).strip() for _ in range(count)])
+
+    elif field_type == "name":
+        return_val = fake.name()
+
+    elif field_type == "address":
+        return_val = fake.address()
 
     return field_name, return_val
 
@@ -237,7 +244,7 @@ if __name__ == '__main__':
     tornado.options.define("num_of_shards", type=int, default=2, help="Number of shards for ES index")
     tornado.options.define("http_upload_timeout", type=int, default=3, help="Timeout in seconds when uploading data")
     tornado.options.define("count", type=int, default=10000, help="Number of docs to generate")
-    tornado.options.define("format", type=str, default='name:str,age:int,last_updated:ts', help="message format")
+    tornado.options.define("format", type=str, default='name:name,address:address,last_updated:ts', help="message format")
     tornado.options.define("num_of_replicas", type=int, default=0, help="Number of replicas for ES index")
     tornado.options.define("force_init_index", type=bool, default=False, help="Force deleting and re-initializing the Elasticsearch index")
     tornado.options.define("set_refresh", type=bool, default=False, help="Set refresh rate to -1 before starting the upload")
